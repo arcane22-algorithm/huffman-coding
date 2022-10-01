@@ -1,17 +1,17 @@
 /**
  * @class HuffmanCoding
- * @author Lee Hong Jun (arcane22, hong3883@naver.com)
+ * @author Lee Hong Jun (arcane222, hong3883@naver.com)
  * @description
- *  - Last modified 2021. 12. 09
+ *  - Last modified 2022. 10. 01
  *  - encoding(), decoding() 메소드를 통하여 txt 파일을 인코딩, 디코딩함.
  *  - huffmanCoding().encoding(file) .txt 압축(인코딩) -> .bin 생성
  *  - huffmanCoding().decoding(file) 생성된 .bin 디코딩 -> .txt 생성
  */
 
-package com.arcane22.huffman_coding;
+package com.arcane222.huffmancoding;
 
 import java.io.File;
-import com.arcane22.huffman_coding.v1.HuffmanCoding;
+import com.arcane222.huffmancoding.v1.HuffmanCoding;
 
 public class Main {
 

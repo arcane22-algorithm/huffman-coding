@@ -6,9 +6,9 @@
  *  - Huffman tree의 각 node를 위한 Node class
  */
 
-package com.arcane22.huffman_coding.v1;
+package com.arcane222.huffmancoding.v1;
 
-public class Node {
+public class Node implements Comparable<Node> {
     /*** Instance Variable ***/
     private Node parent, leftChild, rightChild;
     private char element;
@@ -24,13 +24,17 @@ public class Node {
         this.frequency = frequency;
     }
 
+    @Override
+    public int compareTo(Node n) {
+        return Integer.compare(frequency, n.frequency);
+    }
+
     /**
      * 자식노드가 없다면 Left(잎) 노드
      * @return
      */
     public boolean isLeaf() {
-        if(leftChild == null && rightChild == null) return true;
-        else return false;
+        return leftChild == null && rightChild == null;
     }
 
     /*** Get & Set node's value (element) ***/
