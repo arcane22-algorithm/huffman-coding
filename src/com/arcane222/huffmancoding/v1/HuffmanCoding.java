@@ -12,7 +12,10 @@ package com.arcane222.huffmancoding.v1;
 import java.io.*;
 import java.util.*;
 
+
 public class HuffmanCoding {
+
+    private static final int BYTE_SIZE = 8;
 
     /*** Instance Variable ***/
     private Node root;
@@ -48,7 +51,6 @@ public class HuffmanCoding {
      *
      * @param list
      * @Deprecated
-     *
      */
     @Deprecated
     public void sortListByFrequency(LinkedList<Node> list) {
@@ -63,8 +65,7 @@ public class HuffmanCoding {
     public void calcuCharFrequency(StringBuilder buffer) {
         for (int i = 0; i < buffer.length(); i++) {
             char c = buffer.charAt(i);
-
-            if(map.containsKey(c)) {
+            if (map.containsKey(c)) {
                 map.get(c).setFrequency(map.get(c).getFrequency() + 1);
             } else {
                 map.put(c, new Node(c, 1));
@@ -191,60 +192,68 @@ public class HuffmanCoding {
         leafList = new LinkedList<>();
 
         try {
-            FileInputStream fileInputStream = new FileInputStream(inputFile);
-            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
-            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-            DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            FileInputStream fis = new FileInputStream(inputFile);
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
+
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));
 
             // 1바이트씩 읽어와 fileStrBuffer 에 저장함.
             while (true) {
-                int byteVal = dataInputStream.read();
+                int byteVal = dis.read();
                 if (byteVal != -1) // 만약 파일의 끝(EOF)라면 -1 .read() 메소드는 -1의 값을 리턴함.
                     fileStrBuffer.append((char) byteVal);
                 else break;
             }
+
             calcuCharFrequency(fileStrBuffer);
             makeHuffmanTree();
             makeLeafList();
             encodingBuffer = makeHuffmanCode(fileStrBuffer);
 
+
             // 허프만 트리정보 및 허프만 코드 전체의 길이를 파일에 입력함.
             // (char 의 종류의 수) / (char) (허프만코드 길이) (실제 코드를 integer 로 변환, 크기에 맞게 byte, short, int로 씀) / ... 반복 / (전체 허프만코드 길이) / (전체 허프만코드)
-            dataOutputStream.write(leafList.size());
+            dos.write(leafList.size());
             for (int i = 0; i < leafList.size(); i++) {
                 int length = leafList.get(i).getHuffmanCode().length();
                 int codeVal = Integer.parseInt(leafList.get(i).getHuffmanCode(), 2);
-                dataOutputStream.write(leafList.get(i).getElement());
-                dataOutputStream.write(length);
-                if (length < 9)
-                    dataOutputStream.write(codeVal);
-                else if (length < 17)
-                    dataOutputStream.writeShort(codeVal);
+                dos.write(leafList.get(i).getElement());
+                dos.write(length);
+                if (length <= BYTE_SIZE)
+                    dos.write(codeVal);
+                else if (length <= (BYTE_SIZE << 1))
+                    dos.writeShort(codeVal);
                 else
-                    dataOutputStream.writeInt(codeVal);
+                    dos.writeInt(codeVal);
             }
 
-            dataOutputStream.writeInt(encodingBuffer.length()); //전체 허프만코드 길이
+
+            dos.writeInt(encodingBuffer.length()); //전체 허프만코드 길이
             // 전체 허프만 코드를 출력
-            while (encodingBuffer.length() > 0) {
+            int sp = 0; // src pointer
+            while (encodingBuffer.length() > sp) {
                 int codeVal = 0;
-                if (encodingBuffer.length() > 8) {
-                    codeVal = Integer.parseInt(encodingBuffer.substring(0, 8), 2);
-                    encodingBuffer.delete(0, 8);
-                } else {
-                    codeVal = Integer.parseInt(encodingBuffer.toString(), 2);
-                    encodingBuffer.delete(0, encodingBuffer.length());
-                }
-                dataOutputStream.write(codeVal);
+                if (encodingBuffer.length() - sp > BYTE_SIZE)
+                    codeVal = Integer.parseInt(encodingBuffer.substring(sp, sp + BYTE_SIZE), 2);
+                else
+                    codeVal = Integer.parseInt(encodingBuffer.substring(sp, encodingBuffer.length()), 2);
+
+                dos.write(codeVal);
+                sp += BYTE_SIZE;
             }
+
+            dis.close();
+            dos.close();
 
             System.out.println("인코딩이 완료되었습니다.");
             resultDump(inputFile, outputFile);
-            System.out.println(String.format("압축률: %f (original / compressed)", inputFile.length() / (float) outputFile.length()));
+            System.out.printf("압축률: %f (original / compressed)%n", inputFile.length() / (float) outputFile.length());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * .bin 파일을 읽어 다시 .txt 로 원복시켜주는 디코딩 메소드
@@ -258,23 +267,24 @@ public class HuffmanCoding {
         int codeFullLength = 0;
 
         try {
-            FileInputStream fileInputStream = new FileInputStream(inputFile);
-            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
-            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-            DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            FileInputStream fis = new FileInputStream(inputFile);
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
+
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));
 
             // encoding 시 입력했던 방식대로 다시 읽어와서 디코딩을 실시한다.
-            int charCount = dataInputStream.read();
+            int charCount = dis.read();
             for (int i = 0; i < charCount; i++) {
-                char c = (char) dataInputStream.read();
-                int length = dataInputStream.read();
+                char c = (char) dis.read();
+                int length = dis.read();
                 String code;
-                if (length < 9)
-                    code = Integer.toBinaryString(dataInputStream.read());
-                else if (length < 17)
-                    code = Integer.toBinaryString(dataInputStream.readShort());
+                if (length <= BYTE_SIZE)
+                    code = Integer.toBinaryString(dis.read());
+                else if (length <= (BYTE_SIZE << 1))
+                    code = Integer.toBinaryString(dis.readShort());
                 else
-                    code = Integer.toBinaryString(dataInputStream.readInt());
+                    code = Integer.toBinaryString(dis.readInt());
                 code = zeroPadding(code, length);
 
                 decodingTable.put(code, c);
@@ -282,33 +292,33 @@ public class HuffmanCoding {
 
             // 허프만 코드 전체의 길이를 읽고 그 뒤의 전체 허프만 코드를 읽어오는데, 8비트씩 끊어서 읽어온다
             // 원 코드가 01110000일 경우, 1110000 처럼 읽히므로 모자란부분을 0으로채워줌
-            codeFullLength = dataInputStream.readInt();
-            for (int i = 0; i < (codeFullLength / 8); i++) {
-                int val = dataInputStream.read();
-                String buffer = zeroPadding(Integer.toBinaryString(val), 8);
+            codeFullLength = dis.readInt();
+            for (int i = 0; i < (codeFullLength >> 3); i++) {
+                int val = dis.read();
+                String buffer = zeroPadding(Integer.toBinaryString(val), BYTE_SIZE);
                 decodingBuffer.append(buffer);
             }
-            if (codeFullLength % 8 != 0) //
+
+            if (codeFullLength % BYTE_SIZE != 0) //
                 //마지막 8비트는 비트수 만큼만 0을 채워줌 ex) 마지막 코드가 00011일 경우 11로 읽혀 오므로 실제 길이 5 - 읽힌 길이2 = 3만큼 0을 채워줌
-                decodingBuffer.append(zeroPadding(Integer.toBinaryString(dataInputStream.read()), codeFullLength % 8));
+                decodingBuffer.append(zeroPadding(Integer.toBinaryString(dis.read()), codeFullLength % BYTE_SIZE));
 
 
             // 원복한 전체 허프만 코드가 들어있는 decodingBuffer 의 값을 읽어와 허프만 코드와 문자의 정보가 포함된 decodingTable 을 이용하여
             // 디코딩을 실시하고 원래파일로 원복시킨다.
+            int sp = 0; // src pointer
+            String buffer = "";
+            while (decodingBuffer.length() > sp) {
+                buffer += decodingBuffer.charAt(sp++);
 
-            while (decodingBuffer.length() > 0) {
-                String buffer = null;
-                for (String key : decodingTable.keySet()) {
-                    if (key.length() <= decodingBuffer.length())
-                        buffer = decodingBuffer.substring(0, key.length());
-
-                    if (key.equals(buffer)) {
-                        dataOutputStream.write(decodingTable.get(key));
-                        decodingBuffer.delete(0, key.length());
-                        break;
-                    }
+                if (decodingTable.containsKey(buffer)) {
+                    dos.write(decodingTable.get(buffer));
+                    buffer = "";
                 }
             }
+
+            dis.close();
+            dos.close();
 
             System.out.println("디코딩이 완료되었습니다.");
             resultDump(inputFile, outputFile);
@@ -335,6 +345,24 @@ public class HuffmanCoding {
         sb.delete(0, sb.length());
         sb.append("출력파일: ");
         sb.append(outputFile.getName());
+        sb.append(", ");
+        sb.append(outputFile.length());
+        sb.append(" (bytes)");
+        System.out.println(sb);
+    }
+
+    public void resultDump(RandomAccessFile inputFile, RandomAccessFile outputFile) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("입력파일: ");
+        sb.append(inputFile.toString());
+        sb.append(", ");
+        sb.append(inputFile.length());
+        sb.append(" (bytes)");
+        System.out.println(sb);
+
+        sb.delete(0, sb.length());
+        sb.append("출력파일: ");
+        sb.append(outputFile.toString());
         sb.append(", ");
         sb.append(outputFile.length());
         sb.append(" (bytes)");

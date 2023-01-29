@@ -16,6 +16,7 @@ import com.arcane222.huffmancoding.v1.HuffmanCoding;
 public class Main {
 
     public static void main(String[] args) throws Exception{
+
         // Get program version from program argument
         String version = args[0];
 
@@ -41,16 +42,18 @@ public class Main {
         float execTime = 0;
 
         HuffmanCoding huffmanCoding = new HuffmanCoding();
-        File inputFile = new File("./input/input.txt");
-        File compressedFile = new File("./input/input.bin");
+        final String path = "./input/input.txt";
 
         // Execute encoding, measure execution time
+        File inputFile = new File(path);
+
         before = System.nanoTime();
         huffmanCoding.encoding(inputFile);
         after = System.nanoTime();
         execTime += execTimeDump(before, after);
 
         // Execute decoding, measure execution time
+        File compressedFile = new File("./input/input.bin");
         before = System.nanoTime();
         huffmanCoding.decoding(compressedFile);
         after = System.nanoTime();
