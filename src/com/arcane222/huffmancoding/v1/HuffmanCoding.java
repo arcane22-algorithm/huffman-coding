@@ -65,12 +65,12 @@ public class HuffmanCoding {
     public void calcuCharFrequency(StringBuilder buffer) {
         for (int i = 0; i < buffer.length(); i++) {
             char c = buffer.charAt(i);
-            if (map.containsKey(c)) {
+            if (map.containsKey(c))
                 map.get(c).setFrequency(map.get(c).getFrequency() + 1);
-            } else {
+            else
                 map.put(c, new Node(c, 1));
-            }
         }
+
         pq.addAll(map.values());
     }
 
@@ -191,12 +191,10 @@ public class HuffmanCoding {
         pq = new PriorityQueue<>();
         leafList = new LinkedList<>();
 
-        try {
-            FileInputStream fis = new FileInputStream(inputFile);
-            DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
-
-            FileOutputStream fos = new FileOutputStream(outputFile);
-            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));
+        try (FileInputStream fis = new FileInputStream(inputFile);
+             DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
+             FileOutputStream fos = new FileOutputStream(outputFile);
+             DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos))) {
 
             // 1바이트씩 읽어와 fileStrBuffer 에 저장함.
             while (true) {
@@ -206,9 +204,16 @@ public class HuffmanCoding {
                 else break;
             }
 
+            // 문자열 빈도수 계산
             calcuCharFrequency(fileStrBuffer);
+
+            // 허프만 트리 구축
             makeHuffmanTree();
+
+            // 잎 노드 목록 구축
             makeLeafList();
+
+            // 문자열 인코딩
             encodingBuffer = makeHuffmanCode(fileStrBuffer);
 
 
@@ -243,9 +248,6 @@ public class HuffmanCoding {
                 sp += BYTE_SIZE;
             }
 
-            dis.close();
-            dos.close();
-
             System.out.println("인코딩이 완료되었습니다.");
             resultDump(inputFile, outputFile);
             System.out.printf("압축률: %f (original / compressed)%n", inputFile.length() / (float) outputFile.length());
@@ -266,12 +268,10 @@ public class HuffmanCoding {
         File outputFile = new File("./output/output.txt");
         int codeFullLength = 0;
 
-        try {
-            FileInputStream fis = new FileInputStream(inputFile);
-            DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
-
-            FileOutputStream fos = new FileOutputStream(outputFile);
-            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));
+        try (FileInputStream fis = new FileInputStream(inputFile);
+             DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));
+             FileOutputStream fos = new FileOutputStream(outputFile);
+             DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos))) {
 
             // encoding 시 입력했던 방식대로 다시 읽어와서 디코딩을 실시한다.
             int charCount = dis.read();
@@ -316,9 +316,6 @@ public class HuffmanCoding {
                     buffer = "";
                 }
             }
-
-            dis.close();
-            dos.close();
 
             System.out.println("디코딩이 완료되었습니다.");
             resultDump(inputFile, outputFile);
