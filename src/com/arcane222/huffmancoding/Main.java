@@ -71,7 +71,7 @@ public class Main {
     }
 
     /**
-     * Execute version 2    
+     * Execute version 2
      */
     public static void execV2() throws ExecutionException, InterruptedException {
         // todo-refactoring huffman-coding code (version2)
