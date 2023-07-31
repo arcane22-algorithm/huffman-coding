@@ -1,6 +1,6 @@
 package com.arcane222.huffmancoding.net.example.async;
 
-import static com.arcane222.huffmancoding.net.example.async.util.Constant.*;
+import static com.arcane222.huffmancoding.net.example.async.util.NetConstant.*;
 
 import com.arcane222.huffmancoding.net.example.async.exception.ProgramArgumentEmptyException;
 import com.arcane222.huffmancoding.net.example.async.exception.UndefinedServiceTypeException;
@@ -19,7 +19,6 @@ public class NetMain {
             throw new ProgramArgumentEmptyException("Program argument (port) is empty.");
 
         int port = Integer.parseInt(args[1]);
-
         Optional<NetAsyncSocketServer> asyncSocketServer = NetAsyncSocketServer.newInstance(port);
         asyncSocketServer.ifPresentOrElse(NetAsyncSocketServer::start, NetMain::emptyAction);
     }

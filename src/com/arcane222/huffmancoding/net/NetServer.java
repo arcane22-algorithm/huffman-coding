@@ -1,6 +1,6 @@
 package com.arcane222.huffmancoding.net;
 
-import com.arcane222.huffmancoding.net.common.ThreadPool;
+import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -112,8 +112,6 @@ public class NetServer {
 
         this.initialized = true;
         this.asyncServerChannel.bind(hostAddress);
-
-        this.acceptor.runTaskAsync(() -> new AcceptHandler(channels));
     }
 
     public void sendAsync(Integer socketId, ByteBuffer data) {
@@ -124,6 +122,6 @@ public class NetServer {
     }
 
     public void broadcastAsync(ByteBuffer data) {
-        this.processor.runTaskAsync(BroadcastTask.of(channels, data));
+
     }
 }

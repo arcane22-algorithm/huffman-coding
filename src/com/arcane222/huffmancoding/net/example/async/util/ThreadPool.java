@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.common;
+package com.arcane222.huffmancoding.net.example.async.util;
 
-import com.arcane222.huffmancoding.net.utils.PoolSizeException;
+import com.arcane222.huffmancoding.net.example.async.exception.PoolSizeException;
 
 import java.util.concurrent.*;
 import java.util.function.Function;
@@ -65,19 +65,15 @@ public class ThreadPool implements Executor {
     }
 
     @Override
-    public void execute(Runnable command) {
-        CompletableFuture.runAsync(command, this.pool);
+    public void execute(Runnable task) {
+        this.pool.execute(task);
     }
 
-    public CompletableFuture<Void> runTaskAsync(Runnable task) {
+    public CompletableFuture<Void> executeWithFuture(Runnable task) {
         return CompletableFuture.runAsync(task, this.pool);
     }
 
     public <U> CompletableFuture<U> supplyTaskAsync(Supplier<U> task) {
-        return CompletableFuture.supplyAsync(task);
-    }
-
-    public <T, R> void functionTaskAsync(Function<T, R> task) {
-        
+        return CompletableFuture.supplyAsync(task, this.pool);
     }
 }

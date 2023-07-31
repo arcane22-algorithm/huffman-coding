@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.common;
+package com.arcane222.huffmancoding.net.example.async.task;
 
 import java.util.UUID;
 

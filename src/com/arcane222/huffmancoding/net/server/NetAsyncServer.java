@@ -1,8 +1,7 @@
 package com.arcane222.huffmancoding.net.server;
 
 import com.arcane222.huffmancoding.net.common.NetTask;
-import com.arcane222.huffmancoding.net.utils.NetLogUtils;
-import com.arcane222.huffmancoding.net.common.ThreadPool;
+import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

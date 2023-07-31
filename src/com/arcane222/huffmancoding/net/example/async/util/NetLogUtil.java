@@ -17,8 +17,9 @@ public class NetLogUtil {
 
     public static void serverStartDump(InetSocketAddress endpoint) {
         StringBuilder log = new StringBuilder();
-        log.append("# AsyncSocketServer is running on ");
-        log.append("host=").append(endpoint.getHostName());
+        log.append("# Thread=").append(Thread.currentThread());
+        log.append(", AsyncSocketServer is running on");
+        log.append(" host=").append(endpoint.getHostName());
         log.append(", port=").append(endpoint.getPort());
 
         System.out.println(log);
@@ -26,10 +27,9 @@ public class NetLogUtil {
 
     public static void connectionDump(SocketAddress localAddr, SocketAddress remoteAddr) {
         StringBuilder log = new StringBuilder();
-        log.append("# Local Address=");
-        log.append(localAddr);
-        log.append(", Remote Address=");
-        log.append('\n').append(Thread.currentThread());
+        log.append("# Thread=").append(Thread.currentThread());
+        log.append(", Local Address=").append(localAddr);
+        log.append(", Remote Address=").append(remoteAddr);
         log.append(remoteAddr);
 
         System.out.println(log);

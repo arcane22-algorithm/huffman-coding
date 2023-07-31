@@ -1,7 +1,8 @@
-package com.arcane222.huffmancoding.net.utils;
+package com.arcane222.huffmancoding.net.example.async.exception;
 
 public class PoolSizeException extends RuntimeException {
-    private static final long serialVersionUID = 0L;
+
+    private static final long serialVersionUID = 8313264525295523696L;
 
     public PoolSizeException() {
         super();
