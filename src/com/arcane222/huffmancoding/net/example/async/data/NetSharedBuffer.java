@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.buffer;
+package com.arcane222.huffmancoding.net.example.async.data;
 
 import java.nio.ByteBuffer;
 

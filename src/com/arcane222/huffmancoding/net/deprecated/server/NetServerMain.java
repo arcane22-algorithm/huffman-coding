@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.server;
+package com.arcane222.huffmancoding.net.deprecated.server;
 
 import java.io.IOException;
 

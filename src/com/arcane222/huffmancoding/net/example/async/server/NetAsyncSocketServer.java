@@ -1,7 +1,7 @@
 package com.arcane222.huffmancoding.net.example.async.server;
 
 import com.arcane222.huffmancoding.net.example.async.packet.NetPacket;
-import com.arcane222.huffmancoding.net.example.async.task.NetAcceptTask;
+import com.arcane222.huffmancoding.net.example.async.task.NetServerAcceptTask;
 import com.arcane222.huffmancoding.net.example.async.task.NetAcceptWorker;
 import com.arcane222.huffmancoding.net.example.async.util.ErrorType;
 import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
@@ -14,11 +14,8 @@ import java.util.*;
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.errorDump;
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.serverStartDump;
 
-public class NetAsyncSocketServer {
+public class NetAsyncSocketServer implements NetInstance {
 
-    /* Constant */
-    private static final int MIN_PORT = 0x0000, MAX_PORT = 0xFFFF;
-    private static final int MIN_POOL_SIZE = 0x01, MAX_POOL_SIZE = 0xFF;
     private static final int DEFAULT_POOL_SIZE = (Runtime.getRuntime().availableProcessors() << 1);
 
     /* Instance variables */
@@ -27,7 +24,7 @@ public class NetAsyncSocketServer {
     private final NetClientSocketPool clientPool;
 
 
-    private final NetAcceptTask acceptTask;
+    private final NetServerAcceptTask acceptTask;
     private final NetAcceptWorker acceptWorker;
     private final AsynchronousServerSocketChannel serverSocket;
 
@@ -44,7 +41,7 @@ public class NetAsyncSocketServer {
         clientPool = new NetClientSocketPool(true);
 
         serverSocket = AsynchronousServerSocketChannel.open();
-        acceptTask = new NetAcceptTask(serverSocket, clientPool);
+        acceptTask = new NetServerAcceptTask(serverSocket, clientPool);
         acceptWorker = new NetAcceptWorker(acceptTask);
     }
 
@@ -53,30 +50,17 @@ public class NetAsyncSocketServer {
     }
 
     public static Optional<NetAsyncSocketServer> newInstance(int port, int poolSize) {
-        checkPort(port);
-        checkPoolSize(poolSize);
+        NetInstance.checkPort(port);
+        NetInstance.checkPoolSize(poolSize);
 
-        Optional<NetAsyncSocketServer> instanceOp = Optional.empty();
+        Optional<NetAsyncSocketServer> serverOp = Optional.empty();
         try {
-            instanceOp = Optional.of(new NetAsyncSocketServer(port));
+            serverOp = Optional.of(new NetAsyncSocketServer(port));
         } catch (IOException e) {
             errorDump(ErrorType.CreateServerInstanceError, e);
         }
 
-        return instanceOp;
-    }
-
-    public void start() {
-        try {
-            // bind endpoint
-            serverSocket.bind(endpoint);
-            // start accept worker thread
-            threadPool.execute(acceptTask);
-            // logging
-            serverStartDump(endpoint);
-        } catch (IOException e) {
-            errorDump(ErrorType.StartServerError, e);
-        }
+        return serverOp;
     }
 
     public <T> void send(int clientId, NetPacket<T> sendPacket) {
@@ -97,16 +81,19 @@ public class NetAsyncSocketServer {
         }
     }
 
-    static void checkPort(int port) {
-        if (port < MIN_PORT || port > MAX_PORT)
-            throw new IllegalArgumentException("Port number must be 0 <= port <= 65535.");
+    @Override
+    public void Start() {
+        try {
+            // bind endpoint
+            serverSocket.bind(endpoint);
+            // start accept worker thread
+            threadPool.execute(acceptTask);
+            // logging
+            serverStartDump(endpoint);
+        } catch (IOException e) {
+            errorDump(ErrorType.StartServerError, e);
+        }
     }
-
-    static void checkPoolSize(int poolSize) {
-        if(poolSize < MIN_POOL_SIZE || poolSize > MAX_POOL_SIZE)
-            throw new IllegalArgumentException("Thread-pool size must be 1 <= size <= 256");
-    }
-
 
     @Override
     public String toString() {

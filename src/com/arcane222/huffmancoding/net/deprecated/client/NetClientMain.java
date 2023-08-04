@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.client;
+package com.arcane222.huffmancoding.net.deprecated.client;
 
 public class NetClientMain {
 

@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.server;
+package com.arcane222.huffmancoding.net.deprecated.server;
 
-import com.arcane222.huffmancoding.net.common.NetTask;
+import com.arcane222.huffmancoding.net.deprecated.common.NetTask;
 import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
 
 import java.io.IOException;

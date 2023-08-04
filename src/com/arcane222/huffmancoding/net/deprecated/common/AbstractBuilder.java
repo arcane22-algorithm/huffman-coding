@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.common;
+package com.arcane222.huffmancoding.net.deprecated.common;
 
 public class AbstractBuilder {
 

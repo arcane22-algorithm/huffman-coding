@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net;
+package com.arcane222.huffmancoding.net.deprecated;
 
 import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
 

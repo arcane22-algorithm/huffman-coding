@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.server;
+package com.arcane222.huffmancoding.net.deprecated.server;
 
-import com.arcane222.huffmancoding.net.utils.NetLogUtils;
+import com.arcane222.huffmancoding.net.deprecated.utils.NetLogUtils;
 
 import java.io.IOException;
 import java.nio.channels.AsynchronousServerSocketChannel;

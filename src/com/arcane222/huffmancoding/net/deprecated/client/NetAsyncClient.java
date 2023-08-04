@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.client;
+package com.arcane222.huffmancoding.net.deprecated.client;
 
-import com.arcane222.huffmancoding.net.common.NetAbstractInstance;
+import com.arcane222.huffmancoding.net.deprecated.common.NetAbstractInstance;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

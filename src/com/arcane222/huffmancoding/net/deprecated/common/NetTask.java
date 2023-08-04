@@ -1,6 +1,5 @@
-package com.arcane222.huffmancoding.net.common;
+package com.arcane222.huffmancoding.net.deprecated.common;
 
-import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.nio.channels.NetworkChannel;
 import java.util.UUID;

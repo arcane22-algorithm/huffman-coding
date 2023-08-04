@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.utils;
+package com.arcane222.huffmancoding.net.deprecated.utils;
 
 import java.net.SocketAddress;
 

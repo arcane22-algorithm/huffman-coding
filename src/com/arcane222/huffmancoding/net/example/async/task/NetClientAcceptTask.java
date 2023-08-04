@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.client;
+package com.arcane222.huffmancoding.net.example.async.task;
 
-import com.arcane222.huffmancoding.net.utils.NetLogUtils;
+import com.arcane222.huffmancoding.net.deprecated.utils.NetLogUtils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -8,24 +8,32 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.WritePendingException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class NetClientAcceptHandler implements CompletionHandler<Void, Object> {
+public class NetClientAcceptTask extends Task implements CompletionHandler<Void, Object> {
 
-    private static final InetSocketAddress Endpoint = new InetSocketAddress("127.0.0.1", 7000);
+    private final InetSocketAddress endpoint;
+    private AsynchronousSocketChannel clientSocket;
 
-    private AsynchronousSocketChannel asyncClient;
+    public NetClientAcceptTask(InetSocketAddress endpoint) {
+        this.endpoint = endpoint;
+    }
 
-    public NetClientAcceptHandler(AsynchronousSocketChannel asyncClient) {
-        this.asyncClient = asyncClient;
+    @Override
+    public void run() {
+        try {
+            clientSocket = AsynchronousSocketChannel.open();
+            clientSocket.connect(endpoint, null, this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void completed(Void result, Object attachment) {
         try {
-            NetLogUtils.connectionDump(asyncClient.getLocalAddress(), asyncClient.getRemoteAddress());
+            NetLogUtils.connectionDump(clientSocket.getLocalAddress(), clientSocket.getRemoteAddress());
             ByteBuffer buf = ByteBuffer.allocate(4);
 
             ScheduledThreadPoolExecutor poolExecutor = new ScheduledThreadPoolExecutor(1);
@@ -36,9 +44,9 @@ public class NetClientAcceptHandler implements CompletionHandler<Void, Object> {
                     buf.putInt(data);
                     buf.flip();
 
-                    asyncClient.write(buf);
+                    clientSocket.write(buf);
                     System.out.println("Send data is: " + data);
-                } catch(WritePendingException e) {
+                } catch (WritePendingException e) {
                     NetLogUtils.errorDump("Write Error", e);
                 }
             }, 0, 1, TimeUnit.SECONDS);
@@ -52,10 +60,10 @@ public class NetClientAcceptHandler implements CompletionHandler<Void, Object> {
     public void failed(Throwable exc, Object attachment) {
         NetLogUtils.errorDump("[Fail to connect server]", exc);
 
-        if (!asyncClient.isOpen()) {
+        if (!clientSocket.isOpen()) {
             try {
-                asyncClient = AsynchronousSocketChannel.open();
-                asyncClient.connect(Endpoint, null, this);
+                clientSocket = AsynchronousSocketChannel.open();
+                clientSocket.connect(endpoint, null, this);
             } catch (IOException e) {
                 NetLogUtils.errorDump("", e);
             }

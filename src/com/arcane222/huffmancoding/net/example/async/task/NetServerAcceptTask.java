@@ -10,20 +10,19 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.ReadPendingException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.connectionDump;
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.errorDump;
 
-public class NetAcceptTask extends Task implements CompletionHandler<AsynchronousSocketChannel, Void> {
+public class NetServerAcceptTask extends Task implements CompletionHandler<AsynchronousSocketChannel, Void> {
 
     private final AsynchronousServerSocketChannel serverSocket;
     private final NetClientSocketPool clientPool;
 
-    public NetAcceptTask(AsynchronousServerSocketChannel serverSocket,
-                         NetClientSocketPool clientPool) {
+    public NetServerAcceptTask(AsynchronousServerSocketChannel serverSocket,
+                               NetClientSocketPool clientPool) {
         this.serverSocket = serverSocket;
         this.clientPool = clientPool;
     }
