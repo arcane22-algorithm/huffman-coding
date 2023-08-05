@@ -6,6 +6,8 @@ import com.arcane222.huffmancoding.net.example.async.exception.UndefinedServiceT
 
 public class NetConfig {
 
+    public static final NetConfig EMPTY = new NetConfig(null, null, 0);
+
     private final ServiceType serviceType;
     private final String host;
     private final int port;
@@ -22,14 +24,11 @@ public class NetConfig {
 
     public static NetConfig createConfig(String... args) {
         if (args.length == 0) {
-            throw new ProgramArgumentEmptyException();
+            throw new ProgramArgumentEmptyException("Enter program argument, [server/client] [host-client only] [port], ex) client 127.0.0.1 7000");
         }
 
         String typeStr = args[0].toUpperCase();
         ServiceType type = ServiceType.valueOf(typeStr);
-
-        System.out.println(type);
-
         switch (type) {
             case SERVER: {
                 int port = Integer.parseInt(args[1]);
@@ -43,7 +42,7 @@ public class NetConfig {
             }
 
             default: {
-                throw new UndefinedServiceTypeException("tmp");
+                return NetConfig.EMPTY;
             }
         }
     }

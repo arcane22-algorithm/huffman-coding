@@ -1,15 +1,11 @@
 package com.arcane222.huffmancoding.net.example.async.packet;
 
-import java.nio.ByteBuffer;
+import java.io.Serializable;
 
-public class NetRecvPacket<T> extends NetAbstractPacket<T, ByteBuffer> {
+public class NetRecvPacket<T extends Serializable> extends NetPacketImpl<T> {
 
-    public NetRecvPacket(T data, ByteBuffer buffer) {
-        super(data, buffer);
-    }
 
-    @Override
-    public void setData(T data) {
-
+    protected NetRecvPacket(T data) {
+        super(data);
     }
 }

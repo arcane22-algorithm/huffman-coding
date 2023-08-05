@@ -2,15 +2,24 @@ package com.arcane222.huffmancoding.net.example.async.data;
 
 import java.nio.ByteBuffer;
 
-public class NetSharedBuffer implements NetBuffer {
+public class NetSharedBuffer extends NetBufferImpl {
 
-    private final ByteBuffer sendBuffer;
-    private final ByteBuffer recvBuffer;
+    protected NetSharedBuffer(int bufSize, boolean isDirect) {
+        super(bufSize, isDirect);
+    }
 
-    public NetSharedBuffer(int sendBufferSize, int recvBufferSize, boolean isDirect) {
-        sendBuffer = isDirect ? ByteBuffer.allocateDirect(sendBufferSize)
-                : ByteBuffer.allocate(sendBufferSize);
-        recvBuffer = isDirect ? ByteBuffer.allocateDirect(recvBufferSize)
-                : ByteBuffer.allocate(recvBufferSize);
+    @Override
+    public void allocate(byte[] data) {
+        
+    }
+
+    @Override
+    public void deallocate(int offset, int data) {
+
+    }
+
+    @Override
+    public void freeBuffer() {
+
     }
 }

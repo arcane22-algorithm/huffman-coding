@@ -1,15 +1,18 @@
 package com.arcane222.huffmancoding.net.example.async.packet;
 
-import java.nio.ByteBuffer;
+import java.io.Serializable;
 
-public class NetSendPacket<T> extends NetAbstractPacket<T, ByteBuffer> {
+public class NetSendPacket<T extends Serializable> extends NetPacketImpl<T> {
 
-    public NetSendPacket(T data, ByteBuffer buffer) {
-        super(data, buffer);
+    public static final int DEFAULT_DEST_ID = -1;
+
+    private final int destId = DEFAULT_DEST_ID;
+
+    protected NetSendPacket(T data) {
+        super(data);
     }
 
-    @Override
-    public void setData(T data) {
-
+    public int getDestId() {
+        return destId;
     }
 }

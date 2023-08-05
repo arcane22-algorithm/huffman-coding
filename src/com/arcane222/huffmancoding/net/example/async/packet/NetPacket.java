@@ -1,6 +1,8 @@
 package com.arcane222.huffmancoding.net.example.async.packet;
 
-public interface NetPacket<T> {
+import java.io.Serializable;
+
+public interface NetPacket<T extends Serializable> {
 
     void setData(T data);
 }
