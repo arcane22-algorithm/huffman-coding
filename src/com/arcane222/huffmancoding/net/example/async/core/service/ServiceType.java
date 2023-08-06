@@ -1,6 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.service;
-
-import com.arcane222.huffmancoding.net.example.async.exception.OperationFailException;
+package com.arcane222.huffmancoding.net.example.async.core.service;
 
 public enum ServiceType {
     SERVER("SERVER"),

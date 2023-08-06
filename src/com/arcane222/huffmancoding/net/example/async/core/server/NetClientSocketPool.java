@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.example.async.server;
+package com.arcane222.huffmancoding.net.example.async.core.server;
 
-import com.arcane222.huffmancoding.net.example.async.exception.OperationFailException;
+import com.arcane222.huffmancoding.net.example.async.util.exception.OperationFailException;
 
 import java.util.ArrayList;
 import java.util.List;

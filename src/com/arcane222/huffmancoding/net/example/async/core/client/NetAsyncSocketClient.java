@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.example.async.client;
+package com.arcane222.huffmancoding.net.example.async.core.client;
 
-import com.arcane222.huffmancoding.net.example.async.server.NetInstance;
+import com.arcane222.huffmancoding.net.example.async.core.server.NetInstance;
 import com.arcane222.huffmancoding.net.example.async.task.NetClientAcceptTask;
 import com.arcane222.huffmancoding.net.example.async.util.ErrorType;
 import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;

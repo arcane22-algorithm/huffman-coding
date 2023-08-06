@@ -1,8 +1,8 @@
 package com.arcane222.huffmancoding.net.example.async;
 
-import com.arcane222.huffmancoding.net.example.async.service.NetConfig;
-import com.arcane222.huffmancoding.net.example.async.service.NetService;
-import com.arcane222.huffmancoding.net.example.async.service.NetServiceImpl;
+import com.arcane222.huffmancoding.net.example.async.core.service.NetConfig;
+import com.arcane222.huffmancoding.net.example.async.core.service.NetService;
+import com.arcane222.huffmancoding.net.example.async.core.service.NetServiceImpl;
 
 
 public class NetMain {

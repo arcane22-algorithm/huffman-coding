@@ -1,6 +1,6 @@
-package com.arcane222.huffmancoding.net.example.async.server;
+package com.arcane222.huffmancoding.net.example.async.core.server;
 
-import com.arcane222.huffmancoding.net.example.async.packet.NetPacket;
+import com.arcane222.huffmancoding.net.example.async.data.packet.NetPacket;
 import com.arcane222.huffmancoding.net.example.async.task.NetServerAcceptTask;
 import com.arcane222.huffmancoding.net.example.async.task.NetAcceptWorker;
 import com.arcane222.huffmancoding.net.example.async.util.ErrorType;

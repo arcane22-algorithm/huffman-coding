@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.packet;
+package com.arcane222.huffmancoding.net.example.async.data.packet;
 
 import java.io.Serializable;
 

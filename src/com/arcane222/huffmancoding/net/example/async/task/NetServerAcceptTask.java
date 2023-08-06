@@ -1,7 +1,7 @@
 package com.arcane222.huffmancoding.net.example.async.task;
 
-import com.arcane222.huffmancoding.net.example.async.server.NetClientSocketPool;
-import com.arcane222.huffmancoding.net.example.async.server.NetClientSocketWrapper;
+import com.arcane222.huffmancoding.net.example.async.core.server.NetClientSocketPool;
+import com.arcane222.huffmancoding.net.example.async.core.server.NetClientSocketWrapper;
 import com.arcane222.huffmancoding.net.example.async.util.ErrorType;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.connectionDump;
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.errorDump;
 
-public class NetServerAcceptTask extends Task implements CompletionHandler<AsynchronousSocketChannel, Void> {
+public class NetServerAcceptTask extends NetTaskImpl implements CompletionHandler<AsynchronousSocketChannel, Void> {
 
     private final AsynchronousServerSocketChannel serverSocket;
     private final NetClientSocketPool clientPool;

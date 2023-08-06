@@ -1,9 +1,8 @@
 package com.arcane222.huffmancoding.net.example.async.util;
 
-import com.arcane222.huffmancoding.net.example.async.exception.PoolSizeException;
+import com.arcane222.huffmancoding.net.example.async.util.exception.PoolSizeException;
 
 import java.util.concurrent.*;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ThreadPool implements Executor {

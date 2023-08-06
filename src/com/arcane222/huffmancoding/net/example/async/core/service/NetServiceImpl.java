@@ -1,8 +1,8 @@
-package com.arcane222.huffmancoding.net.example.async.service;
+package com.arcane222.huffmancoding.net.example.async.core.service;
 
-import com.arcane222.huffmancoding.net.example.async.client.NetAsyncSocketClient;
-import com.arcane222.huffmancoding.net.example.async.server.NetAsyncSocketServer;
-import com.arcane222.huffmancoding.net.example.async.server.NetInstance;
+import com.arcane222.huffmancoding.net.example.async.core.client.NetAsyncSocketClient;
+import com.arcane222.huffmancoding.net.example.async.core.server.NetAsyncSocketServer;
+import com.arcane222.huffmancoding.net.example.async.core.server.NetInstance;
 
 public class NetServiceImpl implements NetService {
 

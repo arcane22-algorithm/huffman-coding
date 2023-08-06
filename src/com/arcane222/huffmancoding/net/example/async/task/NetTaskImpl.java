@@ -2,11 +2,11 @@ package com.arcane222.huffmancoding.net.example.async.task;
 
 import java.util.UUID;
 
-public abstract class Task implements Runnable {
+public abstract class NetTaskImpl implements NetTask {
 
     private final UUID taskId;
 
-    public Task() {
+    public NetTaskImpl() {
         taskId = UUID.randomUUID();
     }
 

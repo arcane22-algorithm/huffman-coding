@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.server;
+package com.arcane222.huffmancoding.net.example.async.core.server;
 
 public interface NetInstance {
 

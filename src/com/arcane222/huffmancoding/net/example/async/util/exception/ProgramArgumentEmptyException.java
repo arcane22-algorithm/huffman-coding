@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.exception;
+package com.arcane222.huffmancoding.net.example.async.util.exception;
 
 public class ProgramArgumentEmptyException extends RuntimeException {
     private static final long serialVersionUID = 3055522871634932741L;

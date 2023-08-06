@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.data;
+package com.arcane222.huffmancoding.net.example.async.data.buf;
 
 public interface NetBuffer {
 

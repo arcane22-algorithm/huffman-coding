@@ -2,7 +2,7 @@ package com.arcane222.huffmancoding.net.example.async.task;
 
 import java.nio.channels.CompletionHandler;
 
-public class NetRecvTask extends Task implements CompletionHandler<Integer, Void> {
+public class NetRecvTask extends NetTaskImpl implements CompletionHandler<Integer, Void> {
 
     @Override
     public void run() {

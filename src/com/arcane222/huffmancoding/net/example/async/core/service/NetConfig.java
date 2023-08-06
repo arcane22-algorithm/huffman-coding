@@ -1,7 +1,6 @@
-package com.arcane222.huffmancoding.net.example.async.service;
+package com.arcane222.huffmancoding.net.example.async.core.service;
 
-import com.arcane222.huffmancoding.net.example.async.exception.ProgramArgumentEmptyException;
-import com.arcane222.huffmancoding.net.example.async.exception.UndefinedServiceTypeException;
+import com.arcane222.huffmancoding.net.example.async.util.exception.ProgramArgumentEmptyException;
 
 
 public class NetConfig {

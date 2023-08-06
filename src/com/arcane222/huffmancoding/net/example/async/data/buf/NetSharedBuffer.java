@@ -1,6 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.data;
-
-import java.nio.ByteBuffer;
+package com.arcane222.huffmancoding.net.example.async.data.buf;
 
 public class NetSharedBuffer extends NetBufferImpl {
 

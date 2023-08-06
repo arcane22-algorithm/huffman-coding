@@ -11,7 +11,7 @@ import java.nio.channels.WritePendingException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class NetClientAcceptTask extends Task implements CompletionHandler<Void, Object> {
+public class NetClientAcceptTask extends NetTaskImpl implements CompletionHandler<Void, Object> {
 
     private final InetSocketAddress endpoint;
     private AsynchronousSocketChannel clientSocket;
