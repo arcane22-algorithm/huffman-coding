@@ -1,14 +1,17 @@
 package com.arcane222.huffmancoding.net.example.async.core.server;
 
 import com.arcane222.huffmancoding.net.example.async.data.packet.NetPacket;
+import com.arcane222.huffmancoding.net.example.async.task.NetAcceptTask;
 import com.arcane222.huffmancoding.net.example.async.task.NetServerAcceptTask;
-import com.arcane222.huffmancoding.net.example.async.task.NetAcceptWorker;
+import com.arcane222.huffmancoding.net.example.async.task.worker.NetAcceptWorker;
 import com.arcane222.huffmancoding.net.example.async.util.ErrorType;
 import com.arcane222.huffmancoding.net.example.async.util.ThreadPool;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousServerSocketChannel;
+import java.nio.channels.CompletionHandler;
 import java.util.*;
 
 import static com.arcane222.huffmancoding.net.example.async.util.NetLogUtil.errorDump;
@@ -25,6 +28,7 @@ public class NetAsyncSocketServer implements NetInstance {
 
 
     private final NetServerAcceptTask acceptTask;
+
     private final NetAcceptWorker acceptWorker;
     private final AsynchronousServerSocketChannel serverSocket;
 
@@ -63,11 +67,11 @@ public class NetAsyncSocketServer implements NetInstance {
         return serverOp;
     }
 
-    public <T> void send(int clientId, NetPacket<T> sendPacket) {
+    public <T extends Serializable> void send(int clientId, NetPacket<T> sendPacket) {
         clientPool.getClient(clientId).sendData(sendPacket);
     }
 
-    public <T> void broadcast(NetPacket<T> sendPacket) {
+    public <T extends Serializable> void broadcast(NetPacket<T> sendPacket) {
         List<NetClientSocketWrapper> clients = clientPool.getClients();
         for (var clientSocket : clients) {
             clientSocket.sendData(sendPacket);

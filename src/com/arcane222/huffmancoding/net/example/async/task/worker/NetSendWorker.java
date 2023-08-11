@@ -1,4 +1,4 @@
-package com.arcane222.huffmancoding.net.example.async.task;
+package com.arcane222.huffmancoding.net.example.async.task.worker;
 
 public class NetSendWorker extends Thread {
 
