@@ -26,7 +26,7 @@ public class NetClientSocketWrapper {
             clientSocket.close();
     }
 
-    public <T> void sendData(NetPacket<T> packet) {
+    public <T> void sendData(NetPacket packet) {
 
     }
 

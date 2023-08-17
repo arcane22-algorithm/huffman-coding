@@ -1,9 +1,14 @@
 package com.arcane222.huffmancoding.net.example.async.data.buf;
 
-public interface NetBuffer {
+import java.io.Closeable;
 
-    void allocate(byte[] data);
-    void deallocate(int offset, int len);
+public interface NetBuffer extends Closeable {
 
+    void allocateData(byte[] data);
+    void deallocateData(int offset, int len);
     void freeBuffer();
+
+    int bufferSize();
+
+    boolean isDirect();
 }
