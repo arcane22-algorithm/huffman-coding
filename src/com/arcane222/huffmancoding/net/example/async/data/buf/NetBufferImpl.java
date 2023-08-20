@@ -1,62 +1,51 @@
 package com.arcane222.huffmancoding.net.example.async.data.buf;
 
-import sun.misc.Unsafe;
+import com.arcane222.huffmancoding.net.example.async.data.buf.normal.NormalBuffer;
+import com.arcane222.huffmancoding.net.example.async.data.buf.normal.NormalBufferImpl;
+import com.arcane222.huffmancoding.net.example.async.data.buf.normal.NormalBufferType;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
 
 public abstract class NetBufferImpl implements NetBuffer {
 
-    // Get sun.misc.Unsafe instance
+    private final NormalBuffer buf;
 
-    private ByteBuffer buf;
-
-    private int bufSize;
-    private boolean isDirect;
-
-    private long address;
-
-
-    protected NetBufferImpl(int bufSize, boolean isDirect) {
-        initBuffer(bufSize, isDirect);
+    protected NetBufferImpl(NormalBufferType type, int size) {
+        this.buf = NormalBufferImpl.of(type, size);
     }
 
-    public void resize(int bufSize, boolean isDirect) {
-        freeBuffer();
-        initBuffer(bufSize, isDirect);
+    protected void write(byte data, int offset) {
+        buf.setByte(data, offset);
     }
 
-    private void initBuffer(int bufSize, boolean isDirect) {
-        this.bufSize = bufSize;
-        this.isDirect = isDirect;
-        this.buf = isDirect ? ByteBuffer.allocateDirect(bufSize)
-                : ByteBuffer.allocate(bufSize);
+    protected void writeAll(byte[] data, int size, int srcOffset, int destOffset) {
+        buf.setBytes(data, size, srcOffset, destOffset);
     }
 
-    protected void read(byte[] data, int offset, int len) {
-        buf.flip();
-        buf.get(data, offset, len);
+    protected byte read(int offset) {
+        return buf.getByte(offset);
     }
 
-
-    protected void write(byte[] data, int offset, int len) {
-        buf.flip();
-        buf.put(data, offset, len);
+    protected byte[] readAll(int size, int offset) {
+        return buf.getBytes(size, offset);
     }
 
     @Override
     public int bufferSize() {
-        return this.bufSize;
+        return this.buf.getSize();
     }
 
     @Override
     public boolean isDirect() {
-        return this.isDirect;
+        return this.buf.isDirect();
     }
 
     @Override
-    public final void close() throws IOException {
+    public void freeBuffer() {
+        this.buf.freeBuffer();
+    }
+
+    @Override
+    public final void close() {
         freeBuffer();
     }
 }

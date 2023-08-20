@@ -1,44 +1,42 @@
 package com.arcane222.huffmancoding.net.example.async.data.buf;
 
-import sun.misc.Unsafe;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
+import com.arcane222.huffmancoding.net.example.async.data.buf.normal.NormalBufferType;
+
 
 public class NetSharedBuffer extends NetBufferImpl {
 
-    private static final Unsafe UNSAFE;
+    public NetSharedBuffer(NormalBufferType type, int size) {
+        super(type, size);
+    }
 
-    static {
-        try {
-            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-            unsafeField.setAccessible(true);
-            UNSAFE = (Unsafe) unsafeField.get(null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new ExceptionInInitializerError(" - Get Unsafe Error: " + e.getMessage());
+    @Override
+    public void allocateData(byte data, int offset) {
+        this.write(data, offset);
+    }
+
+    @Override
+    public void allocateData(byte[] data, int size, int srcOffset, int destOffset) {
+        this.writeAll(data, size, srcOffset, destOffset);
+    }
+
+    @Override
+    public byte[] deallocateData(int offset, int len) {
+        byte[] data = new byte[len];
+        for (int i = 0; i < len; i++) {
+            int idx = offset + i;
+            data[i] = this.read(idx);
+            this.write((byte) 0x00, idx);
         }
-    }
 
-    public NetSharedBuffer(int bufSize, boolean isDirect) {
-        super(bufSize, isDirect);
-
-        // test code
-        long address = UNSAFE.allocateMemory(4);
-        UNSAFE.freeMemory(address);
-    }
-
-    @Override
-    public void allocateData(byte[] data) {
-
-    }
-
-    @Override
-    public void deallocateData(int offset, int data) {
-
+        return data;
     }
 
     @Override
     public void freeBuffer() {
+        // do data calculate logic
 
+        // free real buffer
+        super.freeBuffer();
     }
 }
